@@ -2,7 +2,6 @@
 # @Author  : LiuLei
 # @File    : textcnn.py
 # @Software: PyCharm
-# @Time    : 2019/2/26 16:06
 # Desc     :
 import datetime
 import os
@@ -32,13 +31,7 @@ class DeepTextCNN(object):
 
     def __init__(self, sequence_length, num_class, vocab_size, embedding_size,
                  filter_sizes, num_filters, l2_reg_lamba=0.0):
-        # self.sequence_length = sequence_length
-        # self.num_class = num_class
-        # self.vocab_size = vocab_size
-        # self.embedding_size = embedding_size
-        # self.filter_sizes = filter_sizes
-        # self.num_filters = num_filters
-        # self.l2_reg_lamba = l2_reg_lamba
+
         self.input_x = tf.placeholder(tf.int32, [None, sequence_length], name='input_x')
         self.input_y = tf.placeholder(tf.float32, [None, num_class], name='input_y')
         self.dropout_keep_prob = tf.placeholder(tf.float32, name='dropout_keep_prob')
@@ -105,7 +98,7 @@ class DeepTextCNN(object):
         # calculate mean cross-entropy loss
         with tf.name_scope('loss'):
             losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.scores, labels=self.input_y)
-            self.loss = tf.reduce_mean(losses) + l2_reg_lamba * l2_loss  # 用于训练
+            self.loss = tf.reduce_mean(losses) + l2_reg_lamba * l2_loss 
 
         # calculate accuracy
         with tf.name_scope('accuracy'):
@@ -120,14 +113,6 @@ def preprocess():
     '''
     if not os.path.exists("seged_text.txt"):
         logger.info("需要重新生成数据seged_text.txt")
-
-        # engine = sqlalchemy.create_engine("mysql+pymysql://learn:123456@192.168.0.88:3306/learning")
-        # sql = """select content, emotion from qingganyuliao0225"""
-        # idf = data_helpers.get_rawdata(sql, engine)
-        # print("正在分词...")
-        # t1 = time.time()
-        # data_helpers.cut_words(idf)
-        # print("分词完成...", time.time()-t1)
 
     # Load data
     logger.info("loading data...")
@@ -246,7 +231,7 @@ def train(x_train, y_train, vocab_processor, x_dev=None, y_dev=None, learning_ra
 
             # Output director for models and summaries
             timestamp = str(int(time.time()))
-            out_dir = os.path.join("runs", timestamp)  # 修改路径 2019-03-11，原os.path.abspath(os.path.join("runs", timestamp))
+            out_dir = os.path.join("runs", timestamp)  # 修改路径，原os.path.abspath(os.path.join("runs", timestamp))
             logger.info("Writing to {}/n".format(out_dir))
 
             # Summaries for loss and accuracy
@@ -265,7 +250,7 @@ def train(x_train, y_train, vocab_processor, x_dev=None, y_dev=None, learning_ra
             #############################################################################
 
             # checkpoint directory. Tensorflow assumes this directory already exists so we need to create it
-            checkpoint_dir = os.path.join(out_dir, "checkpoints")  # 修改于2019-03-11， 原os.path.abspath(os.path.join(out_dir, "checkpoints"))
+            checkpoint_dir = os.path.join(out_dir, "checkpoints")  # 修改， 原os.path.abspath(os.path.join(out_dir, "checkpoints"))
             checkpoint_prefix = os.path.join(checkpoint_dir, "model")
             if not os.path.exists(checkpoint_dir):
                 os.makedirs(checkpoint_dir)
@@ -326,7 +311,7 @@ def train(x_train, y_train, vocab_processor, x_dev=None, y_dev=None, learning_ra
                 #     print("\nEvaluation dev_set:")
                 #     dev_step(x_dev, y_dev, writer=dev_summary_writer)
                 #################################################################
-                if current_step % 100 == 0:  # TODO:可以调整步数,这儿根据current_step调整
+                if current_step % 100 == 0: 
                     path = saver.save(sess=sess,save_path=checkpoint_prefix, global_step=current_step)
                     logger.info("Save model checkpoint to {}\n".format(path))
 
@@ -376,9 +361,7 @@ def predict(x_test, y_test=None, checkpoint_dir=None):
     print("all predictions: ", all_predictions)
 
     if y_test is not None:
-        # correct_predictions = tf.equal(all_predictions, tf.argmax(y_test, axis=1))
-        # accuracy = tf.reduce_mean(tf.cast(correct_predictions, tf.float32), name="test_accuracy")
-        # print("test data accuracy: ",accuracy)
+
         correct_predictions = np.sum(all_predictions == np.argmax(y_test, axis=1))
         accuracy = correct_predictions / len(y_test)
         print("test data accuracy: ", accuracy)
@@ -408,26 +391,7 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    # text = """山西高速交警四支队十一大队查获一起涉嫌非法运输烟花爆竹违法行为【网易新闻】（梁晓燕） 1月23日，山西高速交警四支队十一大队民警查获一辆涉嫌非法运输烟花爆竹车辆，及时消除了隐患。 当日17时许，民警在霍州收费站执勤点开展集中行动，对一辆轻型厢式货车进行检查，当民警准备驾驶人李某所载货物时，他突然神色慌张、语无伦次。经查，该车车内装了一整车的烟花爆竹，驾驶员无任何危险物品运输资质许可，且车身无任何危险品标志，存在极大的安全隐患。经了解得知，驾驶人李某系霍州人，该车烟花爆竹是从临汾运至霍州准备进行销售的。因驾驶员李某涉嫌非法运输烟花爆竹违法行为，民警随即将所查获的烟花爆竹及运输车辆带回大队队部，并将案件移交给霍州市公安局作进一步调查处理。编辑/董应赞特别声明：本文为网易自媒体平台“网易号”作者上传并发布，仅代表该作者观点。网易仅提供信息发布平台。"""
-    text = """李纪恒布小林看望自治区第十次党代会媒体记者和工作人...让党代会精神在内蒙古大地和各族群众心中落地生根开花结果本网讯(内蒙古日报社融媒体记者刘江)11月26日，李纪恒、布小林、李佳等代表自治区党委、中共内蒙古自治区第十次代表大会主席团，亲切看望慰问了奋战在党代会报道一线的区内外新闻工作者和大会秘书处工作人员，感谢大家连日来的辛勤付出，勉励大家再接再厉、精益求精做好各项工作，努力把祖国北部边疆这道风景线打造得更加亮丽"""
-    text = [" ".join([w for w in jieba.cut(text) if w not in STOPWORDS])]
-    # text = ["""邹城 供电局 路口 突发 车祸 一人 受伤 百家 号 摘要 邹城 供电局 路口 突发 车祸 目击者 称 一辆 轿车 撞 三轮车 三轮车 撞 飞到 白色 轿车 三轮车 驾驶员 受伤 趴在 地上 救护车 赶到 现场 邹城 供电局 路口 突发 车祸 目击者 称 一辆 轿车 撞 三轮车 三轮车 撞 飞到 白色 轿车 三轮车 驾驶员 受伤 趴在 地上 救护车 赶到 现场 加载 中 版权 声明"""]
-    pred = predict(text, y_test=None, checkpoint_dir="runs\\1552289077\\checkpoints")
-    pred = pred.tolist()
-    # print(type(pred))
-    print(str(pred[0]))
+    main()
+    
 
-
-
-    # vocab_path = os.path.join("F:\\pyprograms\\TextClassification\\textcnn\\runs\\1551850745\\checkpoints", "..", "vocab")
-    # print(os.path.exists(vocab_path))
-    # print(os.getcwd())
-    # with open('te.txt', 'r', encoding='utf-8') as f:
-    #     X = [line.strip() for line in f.readlines()]
-    # max_document_length = max([len(x.split(" ")) for x in X])
-    # print(max_document_length)
-    # vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length, min_frequency=0)
-    # x = np.array(list(vocab_processor.fit_transform(X)))
-    # print(x)
 

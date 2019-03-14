@@ -2,7 +2,6 @@
 # @Author  : LiuLei
 # @File    : data_helpers.py
 # @Software: PyCharm
-# @Time    : 2019/2/28 14:10
 # Desc     :
 import logging
 import time
@@ -233,31 +232,4 @@ def PrintLog(log_name):
 if __name__ == "__main__":
     X, y = load_seged_data("seged_text.txt", "labels.txt")
 
-    # model = gensim.models.Word2Vec.load("SA_corpus/Hcorpus.model")
-    # result = model.wv.most_similar("足球")
-    # print(result)
-    # print(model['足球'])
-
-    # print('segmenting...')
-    # t = time.time()
-    # corpus_segment("SA_corpus/Hcorpus.txt", "SA_corpus/seged_Hcorpus.txt")
-    # print("分词完成, ", time.time()-t)
-    # corpus = word2vec.Text8Corpus("SA_corpus/seged_Hcorpus.txt")
-    # print("training...")
-    # t = time.time()
-    # model = word2vec.Word2Vec(corpus, size=100, window=5, min_count=5)  # TODO:可以参数调优
-    # print("训练完成, ", time.time() - t)
-    # model.save("SA_corpus/Hcorpus.model")
-
-    # max_document_length = 4
-    # x_text = [
-    #     'i love you',
-    #     'me too'
-    # ]
-    # vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
-    # vocab_processor.fit(x_text)
-    # print(next(vocab_processor.transform(['foo him'])).tolist())
-    # x = np.array(list(vocab_processor.fit_transform(x_text)))
-    # print(x)
-    # print(len(vocab_processor.vocabulary_))
 
