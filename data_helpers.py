@@ -1,14 +1,14 @@
 #-*- coding: utf-8 -*-
 # @Author  : LiuLei
 # @File    : data_helpers.py
-# @Software: PyCharm
 # Desc     :
+
 import logging
 import time
 
 import jieba
 import os
-# import marisa_trie
+import marisa_trie
 import pickle
 import numpy as np
 import pandas as pd
